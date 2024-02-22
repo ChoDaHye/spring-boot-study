@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Select;
 import org.zerock.domain.BoardVO;
+import org.zerock.domain.MybatisDynamicTestVO;
 
 public interface BoardMapper {
   //@Select("select * from tbl_board where bno > 0")
@@ -21,5 +22,5 @@ public interface BoardMapper {
 
   int update(BoardVO board);
 
-  List<BoardVO> getDynamicMybatis(HashMap<String, String> map);
+  List<BoardVO> getDynamicMybatis(MybatisDynamicTestVO test);
 }

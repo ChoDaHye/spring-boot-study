@@ -10,6 +10,7 @@ import lombok.Setter;
 import lombok.extern.log4j.Log4j;
 import org.zerock.config.DBConfig;
 import org.zerock.domain.BoardVO;
+import org.zerock.domain.MybatisDynamicTestVO;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -77,10 +78,14 @@ public class BoardMapperTests {
 
 	@Test
 	public void mybatisDynamic1Test() {
+		MybatisDynamicTestVO test1 = new MybatisDynamicTestVO();
+
 		HashMap<String, String> map = new HashMap<>();
 		map.put("T", "TTTT");
-		map.put("C", "CCCC");
+		//map.put("C", "CCCC");
 
-		mapper.getDynamicMybatis(map);
+		test1.setMap(map);
+
+		mapper.getDynamicMybatis(test1);
 	}
 }
