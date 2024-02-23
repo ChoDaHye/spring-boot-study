@@ -10,6 +10,7 @@ import lombok.Setter;
 import lombok.extern.log4j.Log4j;
 import org.zerock.config.DBConfig;
 import org.zerock.domain.BoardVO;
+import org.zerock.domain.Criteria;
 import org.zerock.domain.MybatisDynamicTestVO;
 
 import java.util.HashMap;
@@ -19,15 +20,64 @@ import java.util.Map;
 @ContextConfiguration(classes = {DBConfig.class})
 @Log4j
 public class BoardMapperTests {
-  
+
 	@Setter(onMethod_ = @Autowired)
 	private BoardMapper mapper;
 	
 	@Test
 	public void testGetList() {
+		Criteria cri = new Criteria();
+		cri.setType("T");	// T(제목), W(작성자), C(내용), TW(제목 or 작성자), TC(제목 or 내용), TWC(제목 or 작성자 or 내용)
+		cri.setKeyword("user10");
+
 //		System.out.println("aaaaa");
 //		log.info("bbbbb");
-		mapper.getList().forEach(board -> log.info("abc: " + board));
+		mapper.getList(cri).forEach(board -> log.info("abc: " + board));
+	}
+
+	@Test
+	public void testGetList1() {
+		Criteria cri = new Criteria();
+		cri.setType("W");	// T(제목), W(작성자), C(내용), TW(제목 or 작성자), TC(제목 or 내용), TWC(제목 or 작성자 or 내용)
+		cri.setKeyword("user10");
+
+		mapper.getList(cri).forEach(board -> log.info("abc: " + board));
+	}
+
+	@Test
+	public void testGetList2() {
+		Criteria cri = new Criteria();
+		cri.setType("C");	// T(제목), W(작성자), C(내용), TW(제목 or 작성자), TC(제목 or 내용), TWC(제목 or 작성자 or 내용)
+		cri.setKeyword("user10");
+
+		mapper.getList(cri).forEach(board -> log.info("abc: " + board));
+	}
+
+	@Test
+	public void testGetList3() {
+		Criteria cri = new Criteria();
+		cri.setType("TW");	// T(제목), W(작성자), C(내용), TW(제목 or 작성자), TC(제목 or 내용), TWC(제목 or 작성자 or 내용)
+		cri.setKeyword("user10");
+
+		mapper.getList(cri).forEach(board -> log.info("abc: " + board));
+	}
+
+	@Test
+	public void testGetList4() {
+		Criteria cri = new Criteria();
+		cri.setType("TC");	// T(제목), W(작성자), C(내용), TW(제목 or 작성자), TC(제목 or 내용), TWC(제목 or 작성자 or 내용)
+		cri.setKeyword("user10");
+
+		mapper.getList(cri).forEach(board -> log.info("abc: " + board));
+	}
+
+	@Test
+	public void testGetList5() {
+		Criteria cri = new Criteria();
+		cri.setType("TCW");	// T(제목), W(작성자), C(내용), TW(제목 or 작성자), TC(제목 or 내용), TWC(제목 or 작성자 or 내용)
+		cri.setKeyword("user10");
+
+		mapper.getList(cri).forEach(board -> log.info("abc: " + board));
 	}
 
 	@Test
@@ -54,7 +104,7 @@ public class BoardMapperTests {
 
 	@Test
 	public void testRead() {
-		BoardVO boardVO = mapper.read(2L);
+		BoardVO boardVO = mapper.read(44L);
 		log.info(boardVO);
 	}
 
@@ -82,10 +132,23 @@ public class BoardMapperTests {
 
 		HashMap<String, String> map = new HashMap<>();
 		map.put("T", "TTTT");
-		//map.put("C", "CCCC");
+		map.put("C", "CCCC");
 
 		test1.setMap(map);
 
 		mapper.getDynamicMybatis(test1);
+	}
+
+	@Test
+	public void mybatisDynamic2Test() {
+		MybatisDynamicTestVO test2 = new MybatisDynamicTestVO();
+
+		HashMap<String, String> map = new HashMap<>();
+		map.put("T", "TTTT");
+		map.put("C", "CCCC");
+
+		test2.setMap(map);
+
+		mapper.getDynamicMybatis2(test2);
 	}
 }

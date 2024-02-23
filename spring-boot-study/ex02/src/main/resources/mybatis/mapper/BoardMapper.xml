@@ -5,8 +5,22 @@
 	<select id="getList" resultType="org.zerock.domain.BoardVO">
 		<!-- < 혹은 > 등의 특수문자 부등호 때문에 사용 -->
 		<![CDATA[
-			select * from tbl_board where bno > 0 order by bno desc
+			select * from tbl_board
 		]]>
+			<trim prefix="where (" suffix=")" prefixOverrides="or">
+				<foreach item="type" collection="typeArr">
+					<if test="type == 'T'.toString()">
+						or title like '%' || #{keyword} || '%'
+					</if>
+					<if test="type == 'W'.toString()">
+						or writer like '%' || #{keyword} || '%'
+					</if>
+					<if test="type == 'C'.toString()">
+						or content like '%' || #{keyword} || '%'
+					</if>
+				</foreach>
+			</trim>
+			order by bno desc
 	</select>
 
 	<insert id="insert">
@@ -23,7 +37,11 @@
 	</insert>
 
 	<select id="read" resultType="org.zerock.domain.BoardVO">
-		select * from tbl_board where bno = #{bno}
+		select * from tbl_board
+		where 1=1
+		<if test="bno != null">
+			and bno = #{bno}
+		</if>
 	</select>
 
 	<delete id="delete">
@@ -40,11 +58,17 @@
 	</update>
 
 	<select id="getDynamicMybatis" resultType="org.zerock.domain.BoardVO">
-		select * from tbl_board
+		select * from tbl_board where 1=1
 
-		<trim prefix="where (" suffix=")" prefixOverrides="OR" >
+		<!-- prefix: 제일 앞에 들어갈 sql문 -->
+		<!-- suffix: 제일 뒤에 들어갈 sql문 -->
+		<!-- prefixOverrides: 제일 앞에 들어간 SQL문을 remove -->
+		<trim prefixOverrides="OR">
+			<!-- item: foreact문 내에서 사용할 map구조의 value 항목 -->
+			<!-- index: collection의 객체가 map구조라면 사용할 map의 key -->
+			<!-- collection: 전달할 array(list) 혹은 map 파라미터 -->
 			<foreach item="val" index="key" collection="map">
-				<trim  prefix ="OR" >
+				<trim prefix="OR">
 					<if test="key == 'C'.toString()">
 						content = #{val}
 					</if>
@@ -57,5 +81,21 @@
 				</trim>
 			</foreach>
 		</trim>
+	</select>
+
+	<!-- trim 사용하지 않고 foreach만 사용하기 -->
+	<select id="getDynamicMybatis2" resultType="org.zerock.domain.BoardVO">
+		select * from tbl_board where 1=1
+		<foreach item="item" index="key1" collection="map">
+			<if test="key1 == 'C'.toString()">
+				or content = #{item}
+			</if>
+			<if test="key1 == 'T'.toString()">
+				or title = #{item}
+			</if>
+			<if test="key1 == 'W'.toString()">
+				or writer = #{item}
+			</if>
+		</foreach>
 	</select>
 </mapper>

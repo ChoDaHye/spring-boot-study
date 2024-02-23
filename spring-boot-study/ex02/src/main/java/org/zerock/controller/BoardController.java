@@ -12,6 +12,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.zerock.domain.BoardVO;
 
 import lombok.RequiredArgsConstructor;
+import org.zerock.domain.Criteria;
 import org.zerock.service.BoardService;
 
 import java.util.List;
@@ -29,11 +30,12 @@ public class BoardController {
 	 * @return
 	 */
 	@GetMapping("/list")
-	public void list(Model model) {
+	public void list(Criteria cri, Model model) {
 		log.info("list");
 
-		List<BoardVO> boardVOList = service.getList();
+		List<BoardVO> boardVOList = service.getList(cri);
 		model.addAttribute("boardList", boardVOList);
+		model.addAttribute("criteria", cri);
 	}
 
 	@GetMapping("/register")
