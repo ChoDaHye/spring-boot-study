@@ -4,8 +4,6 @@
 <!-- 파일 업로드 처리 용도 -->
 <%@page import="java.util.*" %>
 <%@page import="java.io.*" %>
-<%@ page import="com.oreilly.servlet.*"%>
-<%@ page import="com.oreilly.servlet.multipart.*"%>
 <%
 	// 한글 처리
 	request.setCharacterEncoding("UTF-8");
@@ -24,7 +22,7 @@
 	Exception exception = null;
 	
   // 물리적인 위치 context(내 PC 디렉토리)
-  String savePath = "D:\\temp2\\java_spring_lecture\\cotogether\\workspace_stsb_4_21\\starbucks-notice\\src\\main\\webapp\\upload-files";
+  String savePath = "D:\\spring1\\starbucks-springboot\\src\\main\\resources\\static\\upload-files";
 
   try {
 		// 0.
@@ -41,7 +39,6 @@
 		
 		// 3. 실제 파일 삭제
 		// 물리적인 위치 context(내 PC 디렉토리)
-		//File file = new File(savePath + "\\jsp웹과제_01.png");	// 임시
 		File file = new File(savePath + "\\" + fileName);
    	if (file.exists()) {
    		file.delete();
@@ -63,7 +60,7 @@
 <!-- 성공 케이스 html/css/js -->
 <script>
 	alert('해당 파일이 성공적으로 삭제되었습니다.');	// 1
-	location.href = '<%= request.getContextPath() %>/adminNoticeUpdateForm.jsp?num=' + <%= noticeNum %>;
+	location.href = '<%= request.getContextPath() %>/adminNoticeUpdateForm?num=' + <%= noticeNum %>;
 </script>
 <%
 	} else {									// 공지사항 글 수정이 실패할 경우

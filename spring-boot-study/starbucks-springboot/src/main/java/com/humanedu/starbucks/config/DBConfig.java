@@ -13,6 +13,7 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import javax.sql.DataSource;
 
 @Configuration
+@MapperScan(basePackages = {"com.humanedu.starbucks.mapper"})
 public class DBConfig {
     @Bean
     public DataSource dataSource() {
@@ -34,6 +35,8 @@ public class DBConfig {
     public SqlSessionFactory sqlSessionFactory() throws Exception {
         SqlSessionFactoryBean sqlSessionFactory = new SqlSessionFactoryBean();
         sqlSessionFactory.setDataSource(dataSource());
+        sqlSessionFactory.setMapperLocations(
+                new PathMatchingResourcePatternResolver().getResources("classpath:mybatis/**/*.xml"));
         return (SqlSessionFactory) sqlSessionFactory.getObject();
     }
 }

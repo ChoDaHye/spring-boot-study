@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -28,8 +28,8 @@
 	            </div>
 	            <div class="msg">
 	                내용<textarea placeholder="내용을 입력하세요." name="content" id="content"></textarea>
-	                <input type="file" name="filecontent1" id="filecontent1">
-	                <input type="file" name="filecontent2" id="filecontent2">
+	                <input type="file" name="fileContent" id="filecontent1">
+	                <input type="file" name="fileContent" id="filecontent2">
 	            </div>
 	        </div>
 	        <div class="btn-w">

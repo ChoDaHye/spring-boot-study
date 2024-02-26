@@ -71,9 +71,9 @@
 
     <div class="card">
         <div class="card-header1">
-            <h1><a href="./adminNoticeList">스타벅스 공지사항 글 수정</a></h1>
+            <h1><a href="/adminNoticeList">스타벅스 공지사항 글 수정</a></h1>
         </div>
-        <form action="./adminNoticeUpdate" method="post" id="form1" onSubmit="return false" enctype="multipart/form-data">
+        <form action="/adminNoticeUpdate" method="post" id="form1" onSubmit="return false" enctype="multipart/form-data">
         	<input type="hidden" name="num" value="<%= num %>">
 	        <div class="card-write">
 	            <div class="myinfo">
@@ -87,8 +87,8 @@
 	            </div>
 	            <div class="msg">
 	                내용<textarea placeholder="내용을 입력하세요." name="content" id="content"><%= content %></textarea>
-	                <div><div>1. <input type="file" name="filecontent1" id="filecontent1"><input type="checkbox" name="filecheck" value="1" /><span style="font-size:12px;"> 1번파일 삭제</span></div><div style="font-size:13px;">※ 파일 선택하고 저장시 아래 업로드 파일 목록의 1번의 파일이 없어지거나 대체됨</div></div>
-	                <div><div>2. <input type="file" name="filecontent2" id="filecontent2"><input type="checkbox" name="filecheck" value="2" /><span style="font-size:12px;"> 2번파일 삭제</span></div><div style="font-size:13px;">※ 파일 선택하고 저장시 아래 업로드 파일 목록의 2번의 파일이 없어지거나 대체됨</div></div>
+	                <div><div>1. <input type="file" name="fileContent" id="filecontent1"><input type="checkbox" name="filecheck" value="1" /><span style="font-size:12px;"> 1번파일 삭제</span></div><div style="font-size:13px;">※ 파일 선택하고 저장시 아래 업로드 파일 목록의 1번의 파일이 없어지거나 대체됨</div></div>
+	                <div><div>2. <input type="file" name="fileContent" id="filecontent2"><input type="checkbox" name="filecheck" value="2" /><span style="font-size:12px;"> 2번파일 삭제</span></div><div style="font-size:13px;">※ 파일 선택하고 저장시 아래 업로드 파일 목록의 2번의 파일이 없어지거나 대체됨</div></div>
 	            </div>
 	            <br>
 	            <div>
@@ -98,8 +98,8 @@
 <!-- 첨부파일1 존재 여부 -->								
 <% if(fileContent1 != null) { %>								
 									<li style="list-style-type: none;">
-										<!-- <a href="./upload-files/<%= fileContent1 %>"><%= fileContent1 %></a> -->
-										1. <a href="./fileDownload.jsp?filename=<%= fileContent1 %>"><%= fileContent1 %></a>
+										<!-- <a href="/resources/upload-files/<%= fileContent1 %>"><%= fileContent1 %></a> -->
+										1. <a href="/fileDownload?filename=<%= fileContent1 %>"><%= fileContent1 %></a>
 										<button onClick="javascript: deleteUploadFile(<%= num %>, 1, '<%= fileContent1 %>')">삭제</button>
 									</li>
 <% } %>									
@@ -107,9 +107,9 @@
 <%	if(fileContent2 != null) { %>					
 									<li style="list-style-type: none;">
 										<!--
-										<a href="./upload-files/<%= fileContent2 %>"><%= fileContent2 %></a>
+										<a href="/resources/upload-files/<%= fileContent2 %>"><%= fileContent2 %></a>
 										-->
-										2. <a href="./fileDownload.jsp?filename=<%= fileContent2 %>"><%= fileContent2 %></a>
+										2. <a href="/fileDownload?filename=<%= fileContent2 %>"><%= fileContent2 %></a>
 										<button onClick="javascript: deleteUploadFile(<%= num %>, 2, '<%= fileContent2 %>')">삭제</button>
 									</li>
 <% } %>
