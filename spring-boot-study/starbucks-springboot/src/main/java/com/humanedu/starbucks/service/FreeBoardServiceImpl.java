@@ -60,4 +60,61 @@ public class FreeBoardServiceImpl implements FreeBoardService {
         int rtn = boardMapper.putFreeBoard(freeBoardVO);
         return rtn;
     }
+
+    @Override
+    public int deleteFreeBoard(int num) {
+        return boardMapper.delFreeBoard(num);
+    }
+
+    @Override
+    public FreeBoardVO selectFreeBoardOne(int num) {
+        return boardMapper.getFreeBoardOne(num);
+    }
+
+    @Override
+    public int updateFreeBoard(int num,
+                               String korName,
+                               String subject,
+                               String content,
+                               List<String> fileNameList) {
+        FreeBoardVO freeBoardVO = new FreeBoardVO();
+        freeBoardVO.setNum(num);
+        freeBoardVO.setName(korName);
+        freeBoardVO.setSubject(subject);
+        freeBoardVO.setContent(content);
+
+        if (fileNameList != null && fileNameList.size() != 0) {
+            int fileNameSize = fileNameList.size();
+            if(fileNameSize >= 1) {
+                freeBoardVO.setFile1Path(fileNameList.get(0));
+            }
+            if(fileNameSize >= 2) {
+                freeBoardVO.setFile2Path(fileNameList.get(1));
+            }
+        }
+
+        return boardMapper.updateFreeBoard(freeBoardVO);
+    }
+
+    @Override
+    public int updateFreeBoard(
+            int num,
+            String korName,
+            String subject,
+            String content,
+            String file1Path,
+            String file2Path
+    ) {
+        FreeBoardVO freeBoardVO = new FreeBoardVO();
+        freeBoardVO.setNum(num);
+        freeBoardVO.setName(korName);
+        freeBoardVO.setSubject(subject);
+        freeBoardVO.setContent(content);
+        if (file1Path != "")
+            freeBoardVO.setFile1Path(file1Path);
+        if (file2Path != "")
+            freeBoardVO.setFile2Path(file2Path);
+
+        return boardMapper.updateFreeBoard(freeBoardVO);
+    }
 }

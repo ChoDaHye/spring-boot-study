@@ -30,7 +30,7 @@
   // 파일 업로드 처리
   
   // 물리적인 위치 context(내 PC 디렉토리)
-  String savePath = "D:\\spring1\\starbucks-springboot\\src\\main\\resources\\static\\upload-files";
+  String savePath = "D:\\temp2\\java_spring_lecture\\cotogether\\workspace_stsb_4_21\\starbucks-notice\\src\\main\\webapp\\upload-files";
   /*
   ServletContext context = getServletContext();
   String uploadFilePath = context.getRealPath(savePath);
