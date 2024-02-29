@@ -58,7 +58,12 @@
     </div>
 </div>
 
+<script src="/resources/js/reply.js"></script>
 <script>
+    $(document).ready(function() {
+        console.log('replyService: ', replyService);
+    });
+
     function boardModify() {
         const form1 = document.getElementById('form1');
         form1.action = "/board/modify";
