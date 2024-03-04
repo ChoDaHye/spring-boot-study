@@ -11,6 +11,10 @@
         select * from tbl_reply where rno = #{rno}
     </select>
 
+    <select id="readCurrval" resultType="java.lang.Integer">
+        select seq_reply.currval from dual
+    </select>
+
     <delete id="delete">
         delete from tbl_reply where rno = #{rno}
     </delete>

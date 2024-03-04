@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 import org.zerock.domain.Criteria;
 import org.zerock.domain.ReplyVO;
 import org.zerock.mapper.ReplyMapper;
+import org.zerock.utils.DateTimeUtil;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -44,6 +46,20 @@ public class ReplyServiceImpl implements ReplyService {
     @Override
     public List<ReplyVO> getList(Criteria cri, Long bno) {
         log.info("get Reply List of a Board " + bno);
-        return mapper.getListWithPaging(cri, bno);
+
+        List<ReplyVO> listWithPaging = mapper.getListWithPaging(cri, bno);
+        listWithPaging.stream().forEach(replyVO -> {
+            Date replyDate = replyVO.getReplyDate();
+
+//            replyVO.setReplyDate();
+            replyVO.setReplyDateStr(DateTimeUtil.formatDateTime(replyDate.toString()));
+        });
+
+        return listWithPaging;
+    }
+
+    @Override
+    public int getCurrVal() {
+        return mapper.readCurrval();
     }
 }

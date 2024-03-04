@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface ReplyService {
     int register(ReplyVO vo);
+    int getCurrVal();
     ReplyVO get(Long rno);
     int modify(ReplyVO vo);
     int remove(Long rno);

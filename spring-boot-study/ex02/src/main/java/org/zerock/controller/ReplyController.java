@@ -1,7 +1,6 @@
 package org.zerock.controller;
 
 import lombok.AllArgsConstructor;
-import lombok.extern.java.Log;
 import lombok.extern.log4j.Log4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -30,63 +29,60 @@ public class ReplyController {
         int insertCount = service.register(vo);
         log.info("Reply INSERT COUNT: " + insertCount);
 
-        return insertCount == 1 ? new ResponseEntity<>("success", HttpStatus.OK)
+        Integer newRno = service.getCurrVal();
+        log.info("Reply new number: " + newRno);
+
+        return insertCount == 1 ? new ResponseEntity<>(newRno.toString(), HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     // 댓글 리스트 조회
-    @GetMapping(value = "/board/{bno}/page/{page}/pagesize/{pageSize}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(value = "/board/{bno}/page/{page}/pagesize/{pageSize}", produces = { MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<List<ReplyVO>> getList(
-            @PathVariable("pageSize") Long pagesize,
             @PathVariable("page") int page,
-            @PathVariable("bno") Long bno) {
-
+            @PathVariable("bno") Long bno,
+            @PathVariable("pageSize") int amount
+    ) {
         log.info("getList.................");
-        Criteria cri = new Criteria(page, 20);
+
+        Criteria cri = new Criteria(page, amount);
         log.info(cri);
 
         return new ResponseEntity<>(service.getList(cri, bno), HttpStatus.OK);
     }
 
     // 댓글 상세 조회
-    @GetMapping(value = "/{rno}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<ReplyVO>get(@PathVariable("rno") Long rno){
-            log.info("get: " + rno);
+    @GetMapping(value = "/{rno}", produces = { MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<ReplyVO> get(@PathVariable("rno") Long rno) {
+        log.info("get: " + rno);
 
-            return new ResponseEntity<>(service.get(rno), HttpStatus.OK);
+        return new ResponseEntity<>(service.get(rno), HttpStatus.OK);
     }
-
 
     // 댓글 삭제
     @DeleteMapping(value = "/{rno}", produces = { MediaType.TEXT_PLAIN_VALUE })
     public ResponseEntity<String> remove(@PathVariable("rno") Long rno) {
-
         log.info("remove: " + rno);
 
-        return service.remove(rno) == 1
-                ? new ResponseEntity<>("success", HttpStatus.OK)
+        return service.remove(rno) == 1 ? new ResponseEntity<>("success", HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-
     }
 
     // 댓글 수정
-    @RequestMapping(method = { RequestMethod.PUT,
-            RequestMethod.PATCH }, value = "/{rno}", consumes = "application/json", produces = {
-            MediaType.TEXT_PLAIN_VALUE })
+    @RequestMapping(method = { RequestMethod.PUT, RequestMethod.PATCH },
+            value = "/{rno}",
+            produces = { MediaType.TEXT_PLAIN_VALUE })
     public ResponseEntity<String> modify(
             @RequestBody ReplyVO vo,
-            @PathVariable("rno") Long rno) {
-
+            @PathVariable("rno") Long rno
+    ) {
         vo.setRno(rno);
 
         log.info("rno: " + rno);
         log.info("modify: " + vo);
 
-        return service.modify(vo) == 1
-                ? new ResponseEntity<>("success", HttpStatus.OK)
+        return service.modify(vo) == 1 ? new ResponseEntity<>("success", HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-
     }
-
 }
 
