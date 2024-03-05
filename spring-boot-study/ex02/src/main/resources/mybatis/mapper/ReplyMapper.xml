@@ -15,18 +15,24 @@
         select seq_reply.currval from dual
     </select>
 
+    <select id="getCountByBno" resultType="int">
+        <![CDATA[
+            select count(rno) from tbl_reply where bno = #{bno}
+        ]]>
+    </select>
+
     <delete id="delete">
         delete from tbl_reply where rno = #{rno}
     </delete>
 
     <update id="update">
         update
-        tbl_reply
+            tbl_reply
         set
-        reply = #{reply}
-        , updateDate = sysdate
+            reply = #{reply}
+            , updateDate = sysdate
         where
-        rno = #{rno}
+            rno = #{rno}
     </update>
 
     <select id="getListWithPaging" resultType="org.zerock.domain.ReplyVO">

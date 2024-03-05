@@ -40,16 +40,14 @@
             <hr>
             <div>댓글 </div>
             <hr>
-            <form id="replyForm" onSubmit="return false">
-                  <div class="panel panel-default">
-                      <div class="panel-heading">
-                          <i class="fa fa-comments fa-fw"></i> Reply
-                          <input type="text" name="reply" id="reply" style="width:60%;" />
-                          <button id='addReplyBtn' class='btn btn-primary btn-xs pull-right'>New Reply</button>
-                      </div>
-                      <div class="panel-footer"></div>
-            	</div>
-            </form>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <i class="fa fa-comments fa-fw"></i> Reply
+                    <input type="text" name="reply" id="reply" style="width:60%;" />
+                    <button id='addReplyBtn' class='btn btn-primary btn-xs pull-right'>New Reply</button>
+                </div>
+                <div class="panel-footer"></div>
+            </div>
             <hr>
             <div class="">
                 <ul class="chat">
@@ -84,34 +82,44 @@
                     str += "    <div>";
                     str += "        <div class=''>";
                     str += "            <strong class=''>" + list[i].replyer + "</strong>";
-                    //str += "            <small class=''>" + list[i].replyDateStr + "</small>";
-                    //str += "            <small class=''>" + list[i].replyDate + "</small>";
                     str += "            <small class=''>" + replyService.displayTime(list[i].replyDate) + "</small>";
                     str += "        </div>";
                     str += "        <p id='reply-content-" + list[i].rno + "'>" + list[i].reply + "</p>" ;
-                    /*
                     str += "        <div>" ;
-                    //str += "            <button class='btn btn-primary' type='button' onClick='javascript: replyModify();'>수정</button>" ;
-                    str += "            <button class='reply-update btn btn-primary' type='button' id='reply-update-" + list[i].rno + "' data-rno='" + list[i].rno + "'>수정</button>" ;
-                    //str += "            <button class='btn btn-danger' type='button' onClick='javascript: replyDelete();'>삭제</button>" ;
-                    str += "            <button class='reply-delete btn btn-danger' type='button' id='reply-delete-" + list[i].rno + "' data-rno='" + list[i].rno + "'>삭제</button>" ;
+                    str += "            <button class='reply-update btn btn-primary' type='button' id='reply-update-" + list[i].rno + "' data-rno='" + list[i].rno + "' onClick=''>수정</button>" ;
+                    str += "            <button class='reply-delete btn btn-danger' type='button' id='reply-delete-" + list[i].rno + "' data-rno='" + list[i].rno + "' onClick=''>삭제</button>" ;
+                    str += "            <button class='reply-cancel btn btn-danger' type='button' id='reply-cancel-" + list[i].rno + "' data-rno='" + list[i].rno + "' onClick='replyCancel(" + list[i].rno + ")' style='display: none;'>취소</button>" ;
                     str += "        </div>";
-                    */
                     str += "    </div>";
                     str += "</li>";
                 }
-                replyUL.html(str);
+                replyUL.html(str);  // html 렌더링
 
+                // 댓글 수정 버튼 처리
                 $('.reply-update').on('click', function(e) {
+                    $(this).removeClass("btn-primary");     // 수정버튼 파란색 제거
+                    $(this).addClass("btn-danger");         // 수정버튼 빨간색 변경
+
+                    var rno = $(this).attr('data-rno');
+                    $('#reply-delete-' + rno).hide();                       // 삭제버튼 hide
+                    $('#reply-cancel-' + rno).removeClass("btn-danger");    // 취소버튼 빨간색 제거
+                    $('#reply-cancel-' + rno).addClass("btn-primary");      // 취소버튼 파란색 추가
+                    $('#reply-cancel-' + rno).show();                       // 취소버튼 show
+
+                    const replyContent = $('#reply-content-' + rno).text();
+                    $('#reply-content-' + rno).replaceWith( "<input type='text' id='reply-content-" + rno + "' value='" + (replyContent || $('#reply-content-' + rno).val()) + "' />");
+                });
+
+                // 댓글 삭제 버튼 처리
+                /*
+                $('.reply-delete').on('click', function(e) {
                     $(this).removeClass("btn-primary");
                     $(this).addClass("btn-danger");
 
                     var rno = $(this).attr('data-rno');
-                    $('#reply-delete-' + rno).remove();
 
-                    const replyContent = $('#reply-content-' + rno).text();
-                    $('#reply-content-' + rno).replaceWith( "<input type='text' id='reply-content-" + rno + "' value='" + replyContent + "'/ >");
                 });
+                */
             }
         );
     }
@@ -144,6 +152,7 @@
     );
     */
 
+    // 처음 웹페이지 로딩될 때 실행
     $(document).ready(function() {
         console.log('replyService: ', replyService);
 
@@ -156,26 +165,52 @@
         });
         */
 
-        // 댓글 등록 처리
+        // 댓글 등록 버튼 이벤트 처리
         $('#addReplyBtn').on("click", function(e) {
-            replyService.add(
-                { reply: $('#reply').val(), replyer:"tester", bno: bnoValue },
-                function(result) {
-                    console.log("등록 Result: " + result);
+            // 댓글 상자의 내용 값 가져오기
+            const replyContent = $('#reply').val();
+            // 댓글 작성자 하드코딩
+            const replyerWriter = 'tester';
+            // 댓글 작성시간
+            const newReplyDate = new Date();
 
-                    var str = '';
-                    str += "<li id='reply-row-" + result + "' data-rno='" + result + "' >";
+            // 댓글 등록 ajax호출
+            replyService.add(
+                { reply: replyContent, replyer: replyerWriter, bno: bnoValue },       // request data
+                function(result) {                                              // callback after response
+                    var str = "";
+                    str += "<li id='reply-row-' data-rno='' >";
                     str += "    <div>";
                     str += "        <div class=''>";
-                    str += "            <strong class=''>tester</strong>";
-                    str += "            <small class=''>" + replyService.displayTime(new Date().getTime())+ "</small>";
+                    str += "            <strong class=''>" + replyerWriter + "</strong>";
+                    str += "            <small class=''>" + replyService.displayTime(newReplyDate.getTime()) + "</small>";
                     str += "        </div>";
-                    str += "        <p id='reply-content-" + result + "'>" + $('#reply').val() + "</p>" ;
+                    str += "        <p id='reply-content-'>" + replyContent + "</p>" ;
+                    str += "    </div>";
+                    str += "    <div>";
+                    str += "        <button class='reply-update btn btn-primary' type='button' id='reply-update-' data-rno='' onClick=''>수정</button>";
+                    str += "        <button class='reply-delete btn btn-danger' type='button' id='reply-delete-' data-rno='' onClick=''>삭제</button>" ;
+                    str += "        <button class='reply-cancel btn btn-danger' type='button' id='reply-cancel-' data-rno='' onClick='replyCancel()' style='display: none;'>취소</button>";
                     str += "    </div>";
                     str += "</li>";
 
-                    replyUL.append(str);
-                    $('#reply').val('');
+                    replyUL.append(str);        // 댓글 화면 출력
+                    $('#reply').val('');        // 댓글 등록 상자 내용 초기화
+                            // 댓글 수정 버튼 처리
+                                    $('.reply-update').on('click', function(e) {
+                                        $(this).removeClass("btn-primary");     // 수정버튼 파란색 제거
+                                        $(this).addClass("btn-danger");         // 수정버튼 빨간색 변경
+
+                                        var rno = $(this).attr('data-rno');
+                                        $('#reply-delete-' + rno).hide();                       // 삭제버튼 hide
+                                        $('#reply-cancel-' + rno).removeClass("btn-danger");    // 취소버튼 빨간색 제거
+                                        $('#reply-cancel-' + rno).addClass("btn-primary");      // 취소버튼 파란색 추가
+                                        $('#reply-cancel-' + rno).show();                       // 취소버튼 show
+
+                                        const replyContent = $('#reply-content-' + rno).text();
+                                        $('#reply-content-' + rno).replaceWith( "<input type='text' id='reply-content-" + rno + "' value='" + (replyContent || $('#reply-content-' + rno).val()) + "' />");
+                                    });
+
                 }
             );
         });
@@ -194,5 +229,103 @@
 
         form1.submit();
     }
+
+    // 댓글 취소 버튼 처리
+    function replyCancel(replyNum) {
+        $('#reply-update-' + replyNum).removeClass("btn-danger");       // 빨간색 제거
+        $('#reply-update-' + replyNum).addClass("btn-primary");         // 파란색 추가
+
+        $('#reply-delete-' + replyNum).show();
+        $('#reply-cancel-' + replyNum).hide();
+
+        const replyContent = $('#reply-content-' + replyNum).val();
+        $('#reply-content-' + replyNum).replaceWith("<p id='reply-content-" + replyNum + "'>" + replyContent + "</p>");
+    }
+
+    // 현재 스크롤 위치 저장
+    var lastScroll = 0;
+    var replyPage = 2;
+    const replyTotalCount = <c:out value="${replyTotalCount}" />;
+    const replyMaxPageNum = Math.floor(replyTotalCount / 3) + 1;
+
+    $(document).scroll(function(e) {        // 스크롤 이벤트 리스너
+        //console.log('test1', test1++);
+
+        var currentScroll = $(this).scrollTop();        // 현재 높이 저장
+        //console.log('currentScroll', currentScroll);
+        var documentHeight = $(document).height();      // 전체 문서의 높이
+        //console.log('documentHeight', documentHeight);
+
+        // 현재 스크롤된 높이값
+        var nowHeight = $(this).scrollTop() + $(window).height();
+        //console.log('nowHeight', nowHeight);
+
+        // 스크롤이 아래로 내려갔을때 만 해당 이벤트 진행
+        if(currentScroll > lastScroll) {
+            // nowHeight값이 현 화면의 끝이 어디까지 내려왔는지 파악 가능 -> 전체 문서의 높이에 일정량 근접했을 댓글 리스트 더 가져오기
+            if((documentHeight < (nowHeight + (documentHeight * 0.1))) && replyPage <= replyMaxPageNum) {
+                //console.log("내려왔나? currentScroll", currentScroll);
+
+                // ajax로 댓글 개수 더 가져오기
+                replyService.getList(
+                    { bno: bnoValue, page: replyPage++ || 1 },
+                    function(list) {                      // ajax 함수 콜 성공시 처리
+                        //console.log('list', list);
+
+                        var str = "";
+                        for(var i = 0, len = list.length || 0; i < len; i++) {
+                            str += "<li id='reply-row-" + list[i].rno + "' data-rno='" + list[i].rno + "' >";
+                            str += "    <div>";
+                            str += "        <div class=''>";
+                            str += "            <strong class=''>" + list[i].replyer + "</strong>";
+                            str += "            <small class=''>" + replyService.displayTime(list[i].replyDate) + "</small>";
+                            str += "        </div>";
+                            str += "        <p id='reply-content-" + list[i].rno + "'>" + list[i].reply + "</p>" ;
+                            str += "        <div>" ;
+                            str += "            <button class='reply-update btn btn-primary' type='button' id='reply-update-" + list[i].rno + "' data-rno='" + list[i].rno + "' onClick=''>수정</button>" ;
+                            str += "            <button class='reply-delete btn btn-danger' type='button' id='reply-delete-" + list[i].rno + "' data-rno='" + list[i].rno + "' onClick=''>삭제</button>" ;
+                            str += "            <button class='reply-cancel btn btn-danger' type='button' id='reply-cancel-" + list[i].rno + "' data-rno='" + list[i].rno + "' onClick='replyCancel(" + list[i].rno + ")' style='display: none;'>취소</button>" ;
+                            str += "        </div>";
+                            str += "    </div>";
+                            str += "</li>";
+                        }
+                                // 댓글 수정 버튼 처리
+                                        $('.reply-update').on('click', function(e) {
+                                            $(this).removeClass("btn-primary");     // 수정버튼 파란색 제거
+                                            $(this).addClass("btn-danger");         // 수정버튼 빨간색 변경
+
+                                            var rno = $(this).attr('data-rno');
+                                            $('#reply-delete-' + rno).hide();                       // 삭제버튼 hide
+                                            $('#reply-cancel-' + rno).removeClass("btn-danger");    // 취소버튼 빨간색 제거
+                                            $('#reply-cancel-' + rno).addClass("btn-primary");      // 취소버튼 파란색 추가
+                                            $('#reply-cancel-' + rno).show();                       // 취소버튼 show
+
+                                            const replyContent = $('#reply-content-' + rno).text();
+                                            $('#reply-content-' + rno).replaceWith( "<input type='text' id='reply-content-" + rno + "' value='" + (replyContent || $('#reply-content-' + rno).val()) + "' />");
+                                        });
+
+                        replyUL.append(str);        // 댓글 화면 출력
+                                // 댓글 수정 버튼 처리
+                                        $('.reply-update').on('click', function(e) {
+                                            $(this).removeClass("btn-primary");     // 수정버튼 파란색 제거
+                                            $(this).addClass("btn-danger");         // 수정버튼 빨간색 변경
+
+                                            var rno = $(this).attr('data-rno');
+                                            $('#reply-delete-' + rno).hide();                       // 삭제버튼 hide
+                                            $('#reply-cancel-' + rno).removeClass("btn-danger");    // 취소버튼 빨간색 제거
+                                            $('#reply-cancel-' + rno).addClass("btn-primary");      // 취소버튼 파란색 추가
+                                            $('#reply-cancel-' + rno).show();                       // 취소버튼 show
+
+                                            const replyContent = $('#reply-content-' + rno).text();
+                                            $('#reply-content-' + rno).replaceWith( "<input type='text' id='reply-content-" + rno + "' value='" + (replyContent || $('#reply-content-' + rno).val()) + "' />");
+                                        });
+
+                    }
+                );
+            }
+        }
+
+        lastScroll = currentScroll;
+    });
 </script>
 <%@ include file="../includes/footer.jsp" %>

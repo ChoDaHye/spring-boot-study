@@ -40,6 +40,9 @@
 	<!-- Page level plugins -->
 	<script src="/resources/vendor/datatables/jquery.dataTables.min.js"></script>
 	<script src="/resources/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <!-- JQuery Throttle-Debounce -->
+	<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery-throttle-debounce/1.1/jquery.ba-throttle-debounce.min.js'></script>
 </head>
 
 <body id="page-top">

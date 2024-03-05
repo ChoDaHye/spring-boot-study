@@ -11,5 +11,6 @@ public interface ReplyService {
     ReplyVO get(Long rno);
     int modify(ReplyVO vo);
     int remove(Long rno);
+    int getTotalCount(Long bno);
     List<ReplyVO> getList(Criteria cri, Long bno);
 }

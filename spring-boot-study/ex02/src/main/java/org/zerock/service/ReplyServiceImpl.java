@@ -22,7 +22,7 @@ public class ReplyServiceImpl implements ReplyService {
     public int register(ReplyVO vo) {
         log.info("register......" + vo);
         return mapper.insert(vo);
-    }
+     }
 
     @Override
     public ReplyVO get(Long rno) {
@@ -56,6 +56,11 @@ public class ReplyServiceImpl implements ReplyService {
         });
 
         return listWithPaging;
+    }
+
+    @Override
+    public int getTotalCount(Long bno) {
+        return mapper.getCountByBno(bno);
     }
 
     @Override

@@ -21,7 +21,9 @@
 					<h1 class="h3 mb-2 text-gray-800">
 					    게시판 목록
                     </h1>
+                    <div>
 
+                    </div>
 
 					<!-- DataTales Example -->
 					<div class="card shadow mb-4">
@@ -51,8 +53,8 @@
                                     <tbody>
 									    <c:forEach items="${boardList}" var="board">
 											<tr>
-												<td><c:out value="${board.bno}" /></td>
-												<td><a class='move' href='/board/get?bno=<c:out value="${board.bno}"/>'><c:out value="${board.title}" /></a></td>
+												<td><c:out value="${board.bno}" /></a></td>
+												<td><a class='move' href='/board/get?bno=<c:out value="${board.bno}"/>'><c:out value="${board.title}" /></td>
 												<td><c:out value="${board.writer}" /></td>
 												<td><fmt:formatDate pattern="yyyy-MM-dd" value="${board.regdate}" /></td>
 												<td><fmt:formatDate pattern="yyyy-MM-dd" value="${board.updateDate}" /></td>
@@ -68,26 +70,26 @@
 												<option value="">--</option>
 												<option value="T" <c:out value="${criteria.type == 'T' ? 'selected' : ''}" />>제목</option>
 												<option value="C" <c:if test="${criteria.type == 'C'}">selected</c:if>>내용</option>
-												<option value="W" <c:if test="${criteria.type == 'W'}">selected</c:if>>작성자</option>
-												<option value="TC" <c:if test="${criteria.type == 'TC'}">selected</c:if>>제목 or 내용</option>
-												<option value="TW" <c:if test="${criteria.type == 'TW'}">selected</c:if>>제목 or 작성자</option>
-												<option value="WC" <c:if test="${criteria.type == 'WC'}">selected</c:if>>작성자 or 내용</option>
-												<option value="TWC" <c:if test="${criteria.type == 'TWC'}">selected</c:if>>제목 or 내용 or 작성자</option>
+												<option value="W">작성자</option>
+												<option value="TC">제목 or 내용</option>
+												<option value="TW">제목 or 작성자</option>
+												<option value="WC">작성자 or 내용</option>
+												<option value="TWC">제목 or 내용 or 작성자</option>
 											</select>
-
 											<input type='text' name='keyword' value='<c:out value="${criteria.keyword}" />' />
 											<%-- <input type='hidden' name='pageNum' />
 											<input type='hidden' name='amount' /> --%>
 											<button class='btn btn-primary'>Search</button>
 										</form>
+
 									</div>
+
 								</div>
+								<a href="/board/register" class="btn btn-primary">작성하기</a>
 							</div>
 						</div>
 					</div>
-                     <div>
-                        <a href="/board/register" class="btn btn-primary">작성하기</a>
-                    </div>
+
 				</div>
 				<!-- /.container-fluid -->
 

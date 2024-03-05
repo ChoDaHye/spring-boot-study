@@ -32,7 +32,7 @@ var replyService = (function() {
         var bno = param.bno;
         var page = param.page || 1;
 
-        $.getJSON("/replies/board/" + bno + "/page/" + page + "/pagesize/10",       // get 전용 ajax함수
+        $.getJSON("/replies/board/" + bno + "/page/" + page + "/pagesize/3",       // get 전용 ajax함수
             function(data) {                                            // 호출 성공시 처리되는 함수
                 if (callback) {
                     callback(data);
